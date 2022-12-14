@@ -100,3 +100,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // console.log(getTimeRemaining(deadline)) //296231000
     // console.log(new Date());
 });
+
+
+// Modal
+const modalTrigger = document.querySelectorAll('[data-modal]'),
+      modal = document.querySelector('.modal'),
+      modalClose = document.querySelector('[data-close]');
+
+function openModal() {
+    modal.classList.toggle('active')
+    document.body.classList.add('hidden')
+    clearInterval(modalTimer)
+}
+modalTrigger.forEach(item => {
+    item.addEventListener('click', () => {
+        openModal();
+    })
+})
+
+const modalTimer = setTimeout(openModal, 30000)
+
+function modalCloseF() {
+    modal.classList.remove('active');
+    document.body.classList.remove('hidden')
+}
+
+modalClose.addEventListener('click', () => {
+    modalCloseF();
+})
+
+modal.addEventListener('click', (e) => {
+    if (e.target && e.target == modal) {
+        modalCloseF();
+    }
+})
+
+document.addEventListener('keydown', (e) => {
+    if (e.code == "Escape" && modal.classList.contains('active')) {
+        modalCloseF();
+    }
+})
+
+function shoeM() {
+    if(window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight -1) {
+        console.log(window.pageYOffset); //Скроленный 
+        console.log(document.documentElement.clientHeight); // виденный обьект
+        console.log(document.documentElement.scrollHeight); // общий высота
+        openModal();
+        window.removeEventListener('scroll', shoeM)
+    }
+}
+window.addEventListener('scroll', shoeM);
